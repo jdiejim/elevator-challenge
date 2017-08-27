@@ -3,7 +3,6 @@ export default class Elevator {
     this.currentFloor = 0;
     this.requests = [];
     this.history = [];
-    this.direction = [];
     this.currentRiders = [];
     this.numOfStops = 0;
   }
@@ -13,13 +12,13 @@ export default class Elevator {
     this.requests = [];
     this.history = [];
     this.currentRiders = [];
+    this.prop = [];
     this.numOfStops = 0;
   }
 
   goToFloor(user) {
     return new Promise((res, rej) => {
       this.requests.push(user.currentFloor, user.dropOffFloor);
-      this.direction.push(this.getDirection(user), 'stop');
       this.currentRiders.push(user);
       this.time = new Date(Date.now()).getHours();
       res();
@@ -40,7 +39,6 @@ export default class Elevator {
   moveElevator() {
     while (this.requests.length) {
       const targetFloor = this.requests.shift();
-      const direction = this.direction.shift();
 
       this.currentRiders.shift();
       this.currentFloor = targetFloor;
@@ -51,12 +49,5 @@ export default class Elevator {
     if (this.time < 12 ) {
       this.returnToLobby();
     }
-  }
-
-  getDirection({ currentFloor, dropOffFloor }) {
-    if (currentFloor > dropOffFloor) {
-      return 'down';
-    }
-    return 'up';
   }
 }
